@@ -811,6 +811,11 @@
 (seqL 'a '(1 2))
 (seqR 'a '(1 2))
 
+;;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+;; return a function  VS  pass function as argument
+;; different from pass the function as argument?
+;; dynamic generate function like ruby meta programming
+;;:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 (defun insert-g (test?)
   (lexical-let ((test? test?))
     (function
@@ -824,8 +829,11 @@
          (funcall test? new lat))
         ((cons (car lat)
                (funcall (insert-g test?) new old (cdr lat)))))))))
+
+;; generate two functions
 (setq Linsert (insert-g (function seqL)))
 (setq Rinsert (insert-g (function seqR)))
+
 (funcall Linsert 'jalapen 'and '(tacos tamales and salsa))
 (funcall Linsert 'hello 'tacos '(tacos tamales and salsa))
 (funcall Linsert 'hello 'a '())
@@ -842,6 +850,8 @@
 (funcall Rinsert 'e 'd '(a b c d f g d h))
 (funcall Rinsert 'hello 'salsa '(tacos salsa tamales and salsa))
 
+
+;; generate another two functions
 (setq LLinsert (insert-g
                (lambda (new lat)
                  (cons new lat))))
@@ -912,7 +922,10 @@
           (multiinsertLR new oldL oldR (cdr lat))))))
 (multiinsertLR 'x 'a 'b '(a o a o b o b b a b o))
 
-
+;; querstion
+;; 1. what's the difference between multiinsertLR and multiinsertLR&col
+;; 2. multiinsertLR only collect one kind of sequence, but
+;; multiinsertLR&col collect various of sequence with more information
 ;;multiinsertLR&co
 (defun multiinsertLR&co (new oldL oldR lat col)
   (cond
